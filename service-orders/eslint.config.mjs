@@ -15,6 +15,7 @@ export default [
       parser: tseslint.parser,
       parserOptions: {
         project: "./tsconfig.json",
+        sourceType: "module",
       },
     },
     rules: {
