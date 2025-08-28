@@ -6,4 +6,5 @@ export default {
   tabWidth: 2,
   trailingComma: "all",
   arrowParens: "always",
+  camelCase: false,
 };
