@@ -30,6 +30,8 @@ export default [
     },
     rules: {
       "prettier/prettier": "error",
+      "camelcase": "off",
+      "no-useless-constructor": "off",
     },
   },
 ];
