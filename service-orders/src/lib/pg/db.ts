@@ -1,11 +1,12 @@
 import { Pool, type PoolClient } from 'pg'
+import { env } from '@/env'
 
 const CONFIG = {
-  user: '',
-  host: '',
-  database: '',
-  password: '',
-  port: 0,
+  user: env.DATABASE_USER,
+  host: env.DATABASE_HOST,
+  database: env.DATABASE_NAME,
+  password: env.DATABASE_PASSWORD,
+  port: env.DATABASE_PORT,
 }
 
 class Database {
