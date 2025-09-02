@@ -10,15 +10,9 @@ export async function findUser(request: FastifyRequest, reply: FastifyReply) {
 
   const { id } = registerParamsSchema.parse(request.params)
 
-  try {
-    const findWithPersonUseCase = makeFindWithPersonUseCase()
+  const findWithPersonUseCase = makeFindWithPersonUseCase()
 
-    const user = await findWithPersonUseCase.handler(id)
+  const user = await findWithPersonUseCase.handler(id)
 
-    return reply.status(200).send(user)
-  } catch (error) {
-    console.error(error)
-
-    return reply.status(500).send({ message: 'Error finding user' })
-  }
+  return reply.status(200).send(user)
 }
