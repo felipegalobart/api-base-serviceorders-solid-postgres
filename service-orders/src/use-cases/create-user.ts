@@ -1,4 +1,4 @@
-import type { UserRepository } from '@/repositories/user.repository'
+import type { UserRepository } from '@/repositories/pg/user.repository'
 import { User } from '@/entities/user.entity'
 
 export class CreateUserUseCase {
