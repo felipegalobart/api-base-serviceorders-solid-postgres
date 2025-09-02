@@ -3,6 +3,7 @@ import { personRoutes } from '@/http/controllers/person/routes'
 import { userRoutes } from './http/controllers/user/routes'
 import { ZodError } from 'zod'
 import { env } from 'process'
+import { ResourceNotFoundError } from './use-cases/errors/resource-not-found-error'
 
 export const app = fastify()
 
@@ -14,6 +15,10 @@ app.setErrorHandler((error, _, reply) => {
     return reply
       .status(400)
       .send({ message: 'Validation error', errors: error.format() })
+  }
+
+  if (error instanceof ResourceNotFoundError) {
+    return reply.status(404).send({ message: error.message })
   }
 
   if (env.NODE_ENV !== 'development') {
