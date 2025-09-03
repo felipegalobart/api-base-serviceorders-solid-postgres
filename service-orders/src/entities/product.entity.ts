@@ -1,0 +1,20 @@
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import type { IProduct } from './models/product.interface'
+
+@Entity({ name: 'products' })
+export class Product implements IProduct {
+  @PrimaryGeneratedColumn('uuid', { name: 'id' })
+  id?: string
+
+  @Column({ name: 'name', type: 'varchar' })
+  name: string
+
+  @Column({ name: 'description', type: 'text' })
+  description: string
+
+  @Column({ name: 'image_url', type: 'varchar' })
+  image_url: string
+
+  @Column({ name: 'price', type: 'double precision' })
+  price: number
+}

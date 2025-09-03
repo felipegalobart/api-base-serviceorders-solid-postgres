@@ -14,6 +14,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "strict": true,
+    "strictPropertyInitialization": false,
     "isolatedModules": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
