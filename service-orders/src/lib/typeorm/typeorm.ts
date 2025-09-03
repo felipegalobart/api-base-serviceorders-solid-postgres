@@ -1,5 +1,7 @@
 import { DataSource } from 'typeorm'
 import { env } from '@/env'
+import { Product } from '@/entities/product.entity'
+import { Category } from '@/entities/category.entity'
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -9,7 +11,7 @@ export const AppDataSource = new DataSource({
   password: env.DATABASE_PASSWORD,
   database: env.DATABASE_NAME,
   logging: env.NODE_ENV === 'development',
-  entities: ['./entities/**/*.ts'],
+  entities: [Product, Category],
 })
 
 AppDataSource.initialize()
