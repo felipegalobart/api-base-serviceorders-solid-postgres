@@ -27,7 +27,18 @@ export class AddressRepository implements IAddressRepository {
     return result?.rows || []
   }
 
-  create(address: Address): Promise<Address | undefined> {
-    throw new Error('Method not implemented.')
+  async create({
+    street,
+    city,
+    state,
+    zip_code,
+    person_id,
+  }: Address): Promise<Address | undefined> {
+    const result = await database.clientInstance?.query<Address>(
+      `INSERT INTO "address" (street, city, state, zip_code, person_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [street, city, state, zip_code, person_id],
+    )
+
+    return result?.rows[0]
   }
 }
