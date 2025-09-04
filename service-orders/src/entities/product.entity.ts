@@ -9,7 +9,7 @@ import type { IProduct } from './models/product.interface'
 import type { ICategory } from './models/category.interface'
 import { Category } from './category.entity'
 
-@Entity({ name: 'products' })
+@Entity({ name: 'product' })
 export class Product implements IProduct {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id?: string
