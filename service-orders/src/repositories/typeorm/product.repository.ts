@@ -11,7 +11,30 @@ export class ProductRepository implements IProductRepository {
     this.repository = AppDataSource.getRepository(Product)
   }
 
-  create(product: IProduct): Promise<IProduct> {
+  async findById(id: string): Promise<IProduct | null> {
+    return this.repository.findOne({
+      where: { id },
+      relations: ['category'],
+    })
+  }
+
+  async findAll(page: number, limit: number): Promise<IProduct[]> {
+    return this.repository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+      relations: ['category'],
+    })
+  }
+
+  async update(product: IProduct): Promise<IProduct> {
+    return this.repository.save(product)
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repository.delete({ id })
+  }
+
+  async create(product: IProduct): Promise<IProduct> {
     return this.repository.save(product)
   }
 }
