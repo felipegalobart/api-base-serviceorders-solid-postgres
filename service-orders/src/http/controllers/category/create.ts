@@ -11,7 +11,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
   const createCategoryUseCase = makeCreateCategoryUseCase()
 
-  const category = await createCategoryUseCase.handler(name)
+  await createCategoryUseCase.handler(name)
 
-  return reply.status(201).send(category)
+  return reply.status(201).send({ message: 'Category created' })
 }
