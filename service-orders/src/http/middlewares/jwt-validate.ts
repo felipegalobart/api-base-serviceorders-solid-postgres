@@ -8,7 +8,7 @@ export async function jwtValidate(
     const route = request.routeOptions.url
     const method = request.method
 
-    if (route === '/users' && method === 'POST') return
+    if (route === '/user' && method === 'POST') return
 
     await request.jwtVerify()
   } catch (error) {
