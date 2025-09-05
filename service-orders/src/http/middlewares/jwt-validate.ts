@@ -8,7 +8,18 @@ export async function jwtValidate(
     const route = request.routeOptions.url
     const method = request.method
 
-    if (route === '/user' && method === 'POST') return
+    const publicRoutes = [
+      { method: 'POST', url: '/user' },
+      { method: 'POST', url: '/user/signin' },
+    ]
+
+    const isPublic = publicRoutes.some(
+      (routeConfig) =>
+        routeConfig.method === method &&
+        routeConfig.url === request.routeOptions.url,
+    )
+
+    if (isPublic) return
 
     await request.jwtVerify()
   } catch (error) {
