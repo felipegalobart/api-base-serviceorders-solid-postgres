@@ -22,6 +22,9 @@ export const errorHandlerMap: ErrorHandlerMap = {
   ResourceNotFoundError: (error, _, reply) => {
     return reply.status(404).send({ message: error.message })
   },
+  InvalidCredentialsError: (error, _, reply) => {
+    return reply.status(401).send({ message: error.message })
+  },
 }
 
 export const globalErrorHandler = (
