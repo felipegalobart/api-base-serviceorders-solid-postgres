@@ -3,6 +3,8 @@ import { env } from '@/env'
 import { Product } from '@/entities/product.entity'
 import { Category } from '@/entities/category.entity'
 import { ProductAutoGenerateUUID1757007529297 } from './migrations/1757007529297-ProductAutoGenerateUUID'
+import { User } from '@/entities/user.entity'
+import { CreateUserTable1757355372098 } from './migrations/1757355372098-CreateUserTable'
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -12,8 +14,11 @@ export const AppDataSource = new DataSource({
   password: env.DATABASE_PASSWORD,
   database: env.DATABASE_NAME,
   logging: env.NODE_ENV === 'development',
-  entities: [Product, Category],
-  migrations: [ProductAutoGenerateUUID1757007529297],
+  entities: [Product, Category, User],
+  migrations: [
+    ProductAutoGenerateUUID1757007529297,
+    CreateUserTable1757355372098,
+  ],
 })
 
 AppDataSource.initialize()
