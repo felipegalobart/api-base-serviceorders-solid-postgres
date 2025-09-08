@@ -1,3 +1,4 @@
+import 'reflect-metadata' // ← Adicionar no topo
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -11,10 +12,10 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', unique: true }) // ← Especificar tipo
   username: string
 
-  @Column()
+  @Column({ type: 'varchar' }) // ← Especificar tipo
   password: string
 
   @CreateDateColumn()

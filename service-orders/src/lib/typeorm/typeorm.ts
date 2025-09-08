@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { env } from '@/env'
 import { Product } from '@/entities/product.entity'
