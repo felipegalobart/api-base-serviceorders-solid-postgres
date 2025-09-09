@@ -1,4 +1,4 @@
-import { makeFindAddressByPersonUseCase } from '@/use-cases/factory/make-find-address-by-person-use-case'
+import { makeFindAddressByPersonUseCase } from '@/use-cases/address/factory/make-find-address-by-person-use-case'
 import type { FastifyRequest, FastifyReply } from 'fastify'
 import z from 'zod'
 

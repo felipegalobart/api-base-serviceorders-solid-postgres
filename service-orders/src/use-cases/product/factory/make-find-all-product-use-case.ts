@@ -1,5 +1,5 @@
 import { ProductRepository } from '@/repositories/typeorm/product.repository'
-import { FindAllProductsUseCase } from '../find-all-products'
+import { FindAllProductsUseCase } from '@/use-cases/product/find-all-products'
 
 export function makeFindAllProductUseCase() {
   const productRepository = new ProductRepository()

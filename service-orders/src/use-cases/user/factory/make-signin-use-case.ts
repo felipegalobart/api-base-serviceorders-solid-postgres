@@ -1,5 +1,5 @@
 import { UserRepository } from '@/repositories/pg/user.repository'
-import { SignInUseCase } from '../signin'
+import { SignInUseCase } from '@/use-cases/user/signin'
 
 export function makeSignInUseCase() {
   const userRepository = new UserRepository()

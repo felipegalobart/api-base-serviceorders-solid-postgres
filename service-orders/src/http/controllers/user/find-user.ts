@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-import { makeFindWithPersonUseCase } from '@/use-cases/factory/make-find-with-person-use-case'
+import { makeFindWithPersonUseCase } from '@/use-cases/person/factory/make-find-with-person-use-case'
 
 export async function findUser(request: FastifyRequest, reply: FastifyReply) {
   const registerParamsSchema = z.object({

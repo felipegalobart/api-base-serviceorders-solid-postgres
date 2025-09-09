@@ -1,4 +1,4 @@
-import { makeCreateCategoryUseCase } from '@/use-cases/factory/make-create-category-use-case'
+import { makeCreateCategoryUseCase } from '@/use-cases/category/factory/make-create-category-use-case'
 import type { FastifyRequest, FastifyReply } from 'fastify'
 import z from 'zod'
 

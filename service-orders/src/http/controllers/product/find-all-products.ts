@@ -1,4 +1,4 @@
-import { makeFindAllProductUseCase } from '@/use-cases/factory/make-find-all-product-use-case'
+import { makeFindAllProductUseCase } from '@/use-cases/product/factory/make-find-all-product-use-case'
 import type { FastifyRequest, FastifyReply } from 'fastify'
 import z from 'zod'
 

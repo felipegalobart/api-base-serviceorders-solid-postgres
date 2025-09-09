@@ -1,5 +1,5 @@
 import { ProductRepository } from '@/repositories/typeorm/product.repository'
-import { UpdateProductUseCase } from '../update-product'
+import { UpdateProductUseCase } from '@/use-cases/product/update-product'
 
 export function makeUpdateProductUseCase() {
   const productRepository = new ProductRepository()

@@ -1,5 +1,5 @@
 import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error'
-import { makeSignInUseCase } from '@/use-cases/factory/make-signin-use-case'
+import { makeSignInUseCase } from '@/use-cases/user/factory/make-signin-use-case'
 import { compare } from 'bcryptjs'
 import type { FastifyRequest, FastifyReply } from 'fastify'
 import z from 'zod'

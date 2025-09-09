@@ -1,4 +1,4 @@
-import { makeCreateAddressUseCase } from '@/use-cases/factory/make-create-address-use-case'
+import { makeCreateAddressUseCase } from '@/use-cases/address/factory/make-create-address-use-case'
 import type { FastifyRequest, FastifyReply } from 'fastify'
 import z from 'zod'
 

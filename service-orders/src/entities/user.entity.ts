@@ -10,7 +10,7 @@ import {
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
-  id: number
+  id?: number
 
   @Column({ type: 'varchar', unique: true }) // ← Especificar tipo
   username: string
@@ -19,10 +19,10 @@ export class User {
   password: string
 
   @CreateDateColumn()
-  created_at: Date
+  created_at?: Date
 
   @UpdateDateColumn()
-  updated_at: Date
+  updated_at?: Date
 
   constructor(username?: string, password?: string) {
     if (username) this.username = username

@@ -2,7 +2,7 @@ import type { FastifyRequest, FastifyReply } from 'fastify'
 import z from 'zod'
 import bcrypt from 'bcryptjs'
 
-import { makeCreateUserUseCase } from '@/use-cases/factory/make-create-user-use-case'
+import { makeCreateUserUseCase } from '@/use-cases/user/factory/make-create-user-use-case'
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({

@@ -1,5 +1,5 @@
 import type { ICategory } from '@/entities/models/category.interface'
-import { makeUpdateProductUseCase } from '@/use-cases/factory/make-update-product-use-case'
+import { makeUpdateProductUseCase } from '@/use-cases/product/factory/make-update-product-use-case'
 import type { FastifyRequest, FastifyReply } from 'fastify'
 import z from 'zod'
 

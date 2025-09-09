@@ -1,5 +1,5 @@
 import { Person } from '@/entities/person.entity'
-import type { IPersonRepository } from '../repositories/person.repository.interface'
+import type { IPersonRepository } from '../../repositories/person.repository.interface'
 export class CreatePersonUseCase {
   constructor(private personRepository: IPersonRepository) {}
 
