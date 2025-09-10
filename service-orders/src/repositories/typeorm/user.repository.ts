@@ -3,6 +3,7 @@ import { AppDataSource } from '@/lib/typeorm/typeorm'
 import { User } from '@/entities/user.entity'
 import type { IUserRepository } from '../user.repository.interface'
 import type { IPerson } from '@/entities/models/person.interface'
+import type { UserRole } from '@/entities/models/user-role.enum'
 
 export class UserRepository implements IUserRepository {
   private repository: Repository<User>
@@ -14,6 +15,7 @@ export class UserRepository implements IUserRepository {
   async create(userData: {
     username: string
     password: string
+    role?: UserRole
   }): Promise<User | undefined> {
     const user = this.repository.create(userData)
     return await this.repository.save(user)
