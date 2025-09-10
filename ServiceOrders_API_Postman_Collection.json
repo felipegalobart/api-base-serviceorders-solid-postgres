@@ -1,0 +1,501 @@
+{
+  "info": {
+    "name": "Service Orders API",
+    "description": "API completa para gerenciamento de ordens de serviço com autenticação JWT",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "jwtToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"john_doe\",\n  \"password\": \"securepassword123\",\n  \"role\": \"user\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user",
+              "host": ["{{baseUrl}}"],
+              "path": ["user"]
+            },
+            "description": "Cria um novo usuário. Role opcional: admin, user, manager, viewer"
+          }
+        },
+        {
+          "name": "Sign In",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"john_doe\",\n  \"password\": \"securepassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/signin",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "signin"]
+            },
+            "description": "Autentica usuário e retorna JWT token"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('jwtToken', response.token);",
+                  "    console.log('JWT Token salvo:', response.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "👤 User Management",
+      "item": [
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "1"]
+            },
+            "description": "Busca usuário por ID com dados da pessoa associada"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 Person Management",
+      "item": [
+        {
+          "name": "Create Person",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cpf\": \"12345678901\",\n  \"name\": \"João Silva\",\n  \"birth\": \"1990-05-15\",\n  \"email\": \"joao.silva@email.com\",\n  \"user_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/person",
+              "host": ["{{baseUrl}}"],
+              "path": ["person"]
+            },
+            "description": "Cria uma nova pessoa associada a um usuário"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏠 Address Management",
+      "item": [
+        {
+          "name": "Create Address",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"street\": \"Rua das Flores, 123\",\n  \"city\": \"São Paulo\",\n  \"state\": \"SP\",\n  \"zip_code\": \"01234-567\",\n  \"person_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/address",
+              "host": ["{{baseUrl}}"],
+              "path": ["address"]
+            },
+            "description": "Cria um novo endereço para uma pessoa"
+          }
+        },
+        {
+          "name": "Get Addresses by Person",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/address/person/1?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["address", "person", "1"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Busca endereços de uma pessoa específica com paginação"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Product Management",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Laptop Dell XPS 13\",\n  \"description\": \"Laptop de alta performance para desenvolvedores\",\n  \"image_url\": \"https://example.com/laptop-dell-xps13.jpg\",\n  \"price\": 1299.99,\n  \"categories\": [\n    {\n      \"name\": \"Eletrônicos\"\n    },\n    {\n      \"name\": \"Computadores\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/product",
+              "host": ["{{baseUrl}}"],
+              "path": ["product"]
+            },
+            "description": "Cria um novo produto com categorias"
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/product/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["product", "{{productId}}"]
+            },
+            "description": "Busca produto por ID com suas categorias"
+          }
+        },
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/product?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["product"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Lista todos os produtos com paginação"
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Laptop Dell XPS 13 - Atualizado\",\n  \"description\": \"Laptop de alta performance para desenvolvedores - Versão atualizada\",\n  \"image_url\": \"https://example.com/laptop-dell-xps13-v2.jpg\",\n  \"price\": 1199.99,\n  \"categories\": [\n    {\n      \"id\": 1,\n      \"name\": \"Eletrônicos\"\n    },\n    {\n      \"name\": \"Promoções\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/product/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["product", "{{productId}}"]
+            },
+            "description": "Atualiza um produto existente"
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/product/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["product", "{{productId}}"]
+            },
+            "description": "Remove um produto"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏷️ Category Management",
+      "item": [
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Eletrônicos\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/category",
+              "host": ["{{baseUrl}}"],
+              "path": ["category"]
+            },
+            "description": "Cria uma nova categoria"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🧪 Test Scenarios",
+      "item": [
+        {
+          "name": "Complete User Flow",
+          "item": [
+            {
+              "name": "1. Create Admin User",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"admin_user\",\n  \"password\": \"admin123456\",\n  \"role\": \"admin\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["user"]
+                }
+              }
+            },
+            {
+              "name": "2. Sign In as Admin",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"admin_user\",\n  \"password\": \"admin123456\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user/signin",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["user", "signin"]
+                }
+              }
+            },
+            {
+              "name": "3. Create Person for Admin",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{jwtToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cpf\": \"98765432100\",\n  \"name\": \"Admin Silva\",\n  \"birth\": \"1985-03-20\",\n  \"email\": \"admin.silva@company.com\",\n  \"user_id\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/person",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["person"]
+                }
+              }
+            },
+            {
+              "name": "4. Create Product Categories",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{jwtToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Tecnologia\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/category",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["category"]
+                }
+              }
+            },
+            {
+              "name": "5. Create Product",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{jwtToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"MacBook Pro M3\",\n  \"description\": \"Laptop profissional da Apple com chip M3\",\n  \"image_url\": \"https://example.com/macbook-pro-m3.jpg\",\n  \"price\": 2499.99,\n  \"categories\": [\n    {\n      \"name\": \"Tecnologia\"\n    },\n    {\n      \"name\": \"Apple\"\n    }\n  ]\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/product",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["product"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Log da requisição",
+          "console.log('Making request to:', pm.request.url.toString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Log da resposta",
+          "console.log('Response status:', pm.response.status);",
+          "console.log('Response time:', pm.response.responseTime + 'ms');"
+        ]
+      }
+    }
+  ]
+}

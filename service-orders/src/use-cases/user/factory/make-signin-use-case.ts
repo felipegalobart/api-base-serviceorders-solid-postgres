@@ -1,4 +1,4 @@
-import { UserRepository } from '@/repositories/pg/user.repository'
+import { UserRepository } from '@/repositories/typeorm/user.repository'
 import { SignInUseCase } from '@/use-cases/user/signin'
 
 export function makeSignInUseCase() {

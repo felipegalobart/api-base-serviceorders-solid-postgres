@@ -1,4 +1,5 @@
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
+import { DuplicateUsernameError } from '@/use-cases/errors/duplicate-username-error'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { ZodError } from 'zod'
 
@@ -24,6 +25,9 @@ export const errorHandlerMap: ErrorHandlerMap = {
   },
   InvalidCredentialsError: (error, _, reply) => {
     return reply.status(401).send({ message: error.message })
+  },
+  DuplicateUsernameError: (error, _, reply) => {
+    return reply.status(409).send({ message: error.message })
   },
 }
 
