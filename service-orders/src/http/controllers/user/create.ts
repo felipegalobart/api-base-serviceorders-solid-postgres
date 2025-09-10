@@ -3,6 +3,7 @@ import z from 'zod'
 import bcrypt from 'bcryptjs'
 
 import { makeCreateUserUseCase } from '@/use-cases/user/factory/make-create-user-use-case'
+import type { UserRole } from '@/entities/models/user-role.enum'
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
@@ -15,7 +16,11 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
   const hashedPassword = await bcrypt.hash(password, 10)
 
-  const userWithHashedPassword = { username, password: hashedPassword }
+  const userWithHashedPassword = {
+    username,
+    password: hashedPassword,
+    role: role as UserRole,
+  }
 
   const createUserUseCase = makeCreateUserUseCase()
 

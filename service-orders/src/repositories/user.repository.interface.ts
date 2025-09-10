@@ -6,4 +6,5 @@ export interface IUserRepository {
   update(id: number, userData: Partial<IUser>): Promise<IUser | undefined>
   findWithPerson(userId: number): Promise<(IUser & IPerson) | undefined>
   findByUsername(username: string): Promise<IUser | undefined>
+  findById(id: number): Promise<IUser | undefined>
 }
