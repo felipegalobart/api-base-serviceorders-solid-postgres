@@ -8,9 +8,10 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
     username: z.string().min(3),
     password: z.string().min(6),
+    role: z.string().optional(),
   })
 
-  const { username, password } = registerBodySchema.parse(request.body)
+  const { username, password, role } = registerBodySchema.parse(request.body)
 
   const hashedPassword = await bcrypt.hash(password, 10)
 
