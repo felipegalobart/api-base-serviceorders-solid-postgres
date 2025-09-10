@@ -5,7 +5,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Fastify](https://img.shields.io/badge/Fastify-202020?style=for-the-badge&logo=fastify&logoColor=white)](https://www.fastify.io/)
 
-A **Service Orders Management API** built with **Node.js**, **TypeScript**, **Fastify**, and **PostgreSQL**. This project follows **SOLID principles**, uses **TypeORM** for data access, and implements **JWT-based authentication**.
+A **Service Orders Management API** built with **Node.js**, **TypeScript**, **Fastify**, and **PostgreSQL**. This project follows **SOLID principles**, uses **TypeORM** for data access, implements **JWT-based authentication**, and features **role-based authorization**.
 
 ---
 
@@ -113,6 +113,8 @@ src/
 ├── entities/                    # Domain entities and interfaces
 │   ├── models/                 # Interface definitions
 │   │   ├── user.interface.ts
+│   │   ├── user-role.enum.ts
+│   │   ├── authorization.interface.ts
 │   │   ├── product.interface.ts
 │   │   ├── category.interface.ts
 │   │   ├── person.interface.ts
@@ -129,8 +131,9 @@ src/
 │   │   ├── category/
 │   │   ├── person/
 │   │   └── address/
-│   ├── middlewares/             # Authentication and error middleware
-│   │   └── jwt-validate.ts
+│   ├── middlewares/             # Authentication and authorization middleware
+│   │   ├── jwt-validate.ts
+│   │   └── authorize.ts
 │   └── routes/                  # Route definitions
 ├── lib/                         # External library configurations
 │   ├── typeorm/                 # TypeORM configuration and migrations
@@ -142,8 +145,12 @@ src/
 ├── use-cases/                    # Business logic organized by entity
 │   ├── user/                    # User-related use cases
 │   │   ├── create-user.ts
+│   │   ├── update-user.ts
 │   │   ├── signin.ts
 │   │   ├── find-with-person.ts
+│   │   └── factory/
+│   ├── person/                  # Person-related use cases
+│   │   ├── find-user-by-id.ts
 │   │   └── factory/
 │   ├── product/                 # Product-related use cases
 │   │   ├── create-product.ts
@@ -154,7 +161,6 @@ src/
 │   │   └── factory/
 │   ├── address/                 # Address-related use cases
 │   ├── category/                # Category-related use cases
-│   ├── person/                  # Person-related use cases
 │   └── errors/                  # Custom error classes
 ├── utils/                       # Shared utilities
 │   └── global-error-handler.ts
@@ -163,6 +169,46 @@ src/
 ├── app.ts                       # Application configuration
 └── server.ts                    # Server entry point
 ```
+
+---
+
+## 🔐 Authorization System
+
+This API implements a **role-based authorization system** with the following features:
+
+### 👥 User Roles
+
+- **`admin`**: Full access to all operations, including user management
+- **`user`**: Standard user with limited permissions
+- **`manager`**: Intermediate level with specific permissions
+- **`viewer`**: Read-only access
+
+### 🛡️ Authorization Middleware
+
+The `authorize` middleware provides flexible role-based access control:
+
+```typescript
+// Example: Admin-only route
+app.put('/user/:id', { 
+  preHandler: authorize({ requiredRoles: [UserRole.ADMIN] }) 
+}, update)
+
+// Example: Multiple roles allowed
+app.get('/reports', { 
+  preHandler: authorize({ requiredRoles: [UserRole.ADMIN, UserRole.MANAGER] }) 
+}, getReports)
+```
+
+### 🔒 Protected Endpoints
+
+- **User Update**: Only admins can modify user data
+- **Future endpoints**: Can be easily protected by adding the middleware
+
+### 🚨 Error Responses
+
+- **401 Unauthorized**: Invalid or missing JWT token
+- **403 Forbidden**: Valid token but insufficient permissions
+- **500 Internal Server Error**: Server-side errors
 
 ---
 
@@ -212,18 +258,19 @@ This project implements **SOLID principles** throughout its architecture:
 
 ### Protected Routes (Require JWT)
 
-| Method | Endpoint                    | Description                  |
-| ------ | --------------------------- | ---------------------------- |
-| GET    | `/user/:id`                 | Get user with person data    |
-| POST   | `/person`                   | Create a new person          |
-| POST   | `/address`                  | Create a new address         |
-| GET    | `/address/person/:personId` | Get addresses by person      |
-| POST   | `/category`                 | Create a new category        |
-| POST   | `/product`                  | Create a new product         |
-| GET    | `/product/:id`              | Get product by ID            |
-| GET    | `/product`                  | Get all products (paginated) |
-| PUT    | `/product/:id`              | Update product               |
-| DELETE | `/product/:id`              | Delete product               |
+| Method | Endpoint                    | Description                  | Authorization |
+| ------ | --------------------------- | ---------------------------- | ------------- |
+| GET    | `/user/:id`                 | Get user by ID               | Any user      |
+| PUT    | `/user/:id`                 | Update user                  | Admin only    |
+| POST   | `/person`                   | Create a new person          | Any user      |
+| POST   | `/address`                  | Create a new address         | Any user      |
+| GET    | `/address/person/:personId` | Get addresses by person      | Any user      |
+| POST   | `/category`                 | Create a new category        | Any user      |
+| POST   | `/product`                  | Create a new product         | Any user      |
+| GET    | `/product/:id`              | Get product by ID            | Any user      |
+| GET    | `/product`                  | Get all products (paginated) | Any user      |
+| PUT    | `/product/:id`              | Update product               | Any user      |
+| DELETE | `/product/:id`              | Delete product               | Any user      |
 
 ---
 
@@ -236,7 +283,8 @@ curl -X POST http://localhost:3000/user \
   -H "Content-Type: application/json" \
   -d '{
     "username": "john_doe",
-    "password": "securepassword123"
+    "password": "securepassword123",
+    "role": "admin"
   }'
 ```
 
@@ -269,7 +317,19 @@ curl -X POST http://localhost:3000/product \
   }'
 ```
 
-### 4. Get All Products
+### 4. Update User (Admin Only)
+
+```bash
+curl -X PUT http://localhost:3000/user/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "username": "updated_username",
+    "role": "manager"
+  }'
+```
+
+### 5. Get All Products
 
 ```bash
 curl -X GET "http://localhost:3000/product?page=1&limit=10" \
@@ -331,11 +391,14 @@ npx typeorm migration:revert -d ./build/lib/typeorm/typeorm.js
 
 - [x] Core architecture with SOLID principles
 - [x] JWT authentication system
+- [x] Role-based authorization system (admin, user, manager, viewer)
 - [x] User, Product, Category, Person, Address entities
-- [x] TypeORM integration
+- [x] TypeORM integration with migrations
 - [x] Repository pattern implementation
 - [x] Use cases organization by entity
 - [x] Error handling system
+- [x] Generic authorization middleware
+- [x] User update functionality with validation
 
 ### 🔄 In Progress
 
@@ -344,7 +407,6 @@ npx typeorm migration:revert -d ./build/lib/typeorm/typeorm.js
 
 ### 📋 Planned
 
-- [ ] Role-based access control (admin, user)
 - [ ] Advanced pagination and filtering
 - [ ] Email notification system
 - [ ] Docker containerization
@@ -352,6 +414,8 @@ npx typeorm migration:revert -d ./build/lib/typeorm/typeorm.js
 - [ ] Performance monitoring
 - [ ] Rate limiting
 - [ ] Caching layer (Redis)
+- [ ] Audit logging system
+- [ ] Multi-tenant support
 
 ---
 
