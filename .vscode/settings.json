@@ -20,5 +20,19 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "markdown.validate.enabled": false,
+  "markdownlint.enabled": false,
+  "markdownlint.config": {
+    "MD013": false,
+    "MD029": false,
+    "MD033": false,
+    "MD036": false,
+    "MD040": false,
+    "MD051": false,
+    "default": true
+  },
+  "markdown.preview.breaks": true,
+  "markdown.extension.toc.levels": "1..6",
+  "markdown.extension.toc.updateOnSave": false,
+  "markdown.extension.preview.autoShowPreviewToSide": false,
   "postman.settings.dotenv-detection-notification-visibility": false
 }

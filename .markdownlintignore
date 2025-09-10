@@ -1,0 +1,14 @@
+# Ignore all markdown files
+*.md
+*.MD
+
+# Specific files
+README.md
+ServiceOrders_Documentation.md
+ServiceOrders_StepByStepGuide.md
+service-orders-technical-report.md
+
+# Documentation directories
+docs/
+documentation/
+

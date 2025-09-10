@@ -13,7 +13,7 @@ A **Service Orders Management API** built with **Node.js**, **TypeScript**, **Fa
 
 - [Prerequisites](#-prerequisites)
 - [Installation](#-installation)
-- [Configuration](#-configuration)
+- [Configuration](#-configuration)  
 - [Running the Application](#-running-the-application)
 - [Project Structure](#-project-structure)
 - [SOLID Architecture](#-solid-architecture)

@@ -1,4 +1,3 @@
-
 # 📄 Technical Project Report – Service Orders API
 
 **Date:** 2025-09-05  
@@ -24,7 +23,7 @@ src/
 ├── use-cases/             # Business logic grouped by entity
 │   └── factory/           # Factory Pattern for dependency injection
 │   └── errors/            # Custom application errors
-├── repositories/          
+├── repositories/
 │   ├── interfaces/        # Abstractions
 │   ├── pg/                # Raw SQL Repositories
 │   └── typeorm/           # TypeORM Repositories
