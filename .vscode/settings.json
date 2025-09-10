@@ -15,5 +15,10 @@
     "source.fixAll": "explicit",
     "source.fixAll.eslint": "explicit"
   },
+  "[markdown]": {
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "markdown.validate.enabled": false,
   "postman.settings.dotenv-detection-notification-visibility": false
 }
