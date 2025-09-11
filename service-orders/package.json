@@ -10,7 +10,12 @@
     "dev": "tsx src/server.ts",
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.cjs",
-    "build": "tsup src --out-dir build"
+    "build": "tsup src --out-dir build",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui",
+    "test:ci": "vitest --run --coverage"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +28,7 @@
     "@types/pg": "8.15.5",
     "@typescript-eslint/eslint-plugin": "8.41.0",
     "@typescript-eslint/parser": "8.41.0",
+    "@vitest/ui": "3.2.4",
     "eslint": "9.34.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-eslint-comments": "3.2.0",
@@ -32,9 +38,11 @@
     "eslint-plugin-unicorn": "60.0.0",
     "globals": "16.3.0",
     "prettier": "3.6.2",
+    "supertest": "^6.3.3",
     "tsup": "8.5.0",
     "tsx": "4.20.5",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "vitest": "3.2.4"
   },
   "dependencies": {
     "@fastify/jwt": "10.0.0",
